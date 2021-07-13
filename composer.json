@@ -1,5 +1,5 @@
 {
-    "name": "ahmard/swos",
+    "name": "ahmard/swoose",
     "description": "Swoole Session",
     "type": "library",
     "require-dev": {
