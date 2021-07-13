@@ -39,7 +39,7 @@ class Session
         return array_key_exists($key, $this->getAll());
     }
 
-    public function delete(string $key): void
+    public function remove(string $key): void
     {
         $data = $this->getAll();
         unset($data[$key]);
