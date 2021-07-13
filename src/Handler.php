@@ -49,45 +49,6 @@ class Handler
     }
 
     /**
-     * Open the session
-     *
-     * @param string $path
-     * @param string $name
-     * @return bool
-     * @throws Exception
-     */
-    public function open(string $path, string $name): bool
-    {
-        $this->key = $this->getKey('KEY_' . $name);
-        return parent::open($path, $name);
-    }
-
-    /**
-     * Read from session and decrypt
-     *
-     * @param string $id
-     * @return string
-     */
-    public function read(string $id): string
-    {
-        $data = parent::read($id);
-        return empty($data) ? '' : $this->decrypt($data, $this->key);
-    }
-
-    /**
-     * Encrypt the data and write into the session
-     *
-     * @param string $id
-     * @param string $data
-     * @return bool
-     * @throws Exception
-     */
-    public function write(string $id, string $data): bool
-    {
-        return parent::write($id, $this->encrypt($data, $this->key));
-    }
-
-    /**
      * Encrypt and authenticate
      *
      * @param string $data
@@ -95,7 +56,7 @@ class Handler
      * @return string
      * @throws Exception
      */
-    protected function encrypt(string $data, string $key): string
+    public function encrypt(string $data, string $key): string
     {
         $iv = random_bytes(16); // AES block size in CBC mode
 
@@ -126,7 +87,7 @@ class Handler
      * @param string $key
      * @return string
      */
-    protected function decrypt(string $data, string $key): string
+    public function decrypt(string $data, string $key): string
     {
         $hmac = mb_substr($data, 0, 32, '8bit');
         $iv = mb_substr($data, 32, 16, '8bit');
@@ -161,7 +122,7 @@ class Handler
      * @return string
      * @throws Exception
      */
-    protected function getKey(string $name): string
+    public function getKey(string $name): string
     {
         if (empty($this->request->cookie[$name])) {
             $key = random_bytes(64); // 32 for encryption and 32 for authentication
