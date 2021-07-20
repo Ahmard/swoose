@@ -54,6 +54,6 @@ class Manager
             );
         }
 
-        return new Session($this->config->getAdapter(), $this->config->getCookieName());
+        return new Session($this->config->getAdapter(), $sessId);
     }
 }

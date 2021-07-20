@@ -5,6 +5,7 @@ namespace Swoose;
 
 
 use Psr\Cache\CacheItemInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class Session
@@ -12,12 +13,18 @@ class Session
     protected CacheItemInterface $cacheItem;
 
 
+    /**
+     * Session constructor.
+     * @param AdapterInterface $adapter
+     * @param string $sessionId
+     * @throws InvalidArgumentException
+     */
     public function __construct(
         protected AdapterInterface $adapter,
-        protected string $cookieName,
+        protected string $sessionId,
     )
     {
-        $this->cacheItem = $this->adapter->getItem($this->cookieName);
+        $this->cacheItem = $this->adapter->getItem($this->sessionId);
     }
 
     public function put(string $key, mixed $data): void
